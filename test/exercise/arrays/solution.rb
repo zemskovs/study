@@ -8,7 +8,19 @@ module Exercise
       end
 
       def search(_array, _query)
-        0
+        return -1 if _array.empty?
+
+        middle_index = _array.length / 2
+        current_value = _array[middle_index]
+
+        return middle_index if current_value == _query
+
+        return search(_array.take(middle_index), _query) if _query < current_value
+
+        if _query > current_value
+          corrective_index = search(_array.drop(middle_index + 1), _query)
+          corrective_index == -1 ? -1 : (middle_index + 1) + corrective_index
+        end
       end
 
       private
