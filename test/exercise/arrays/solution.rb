@@ -7,20 +7,23 @@ module Exercise
         replaced_array
       end
 
-      def search(array, query)
-        return -1 if array.empty?
+      def search(array, query, min_index = 0, max_index = array.size - 1)
+        return - 1 if max_index < min_index
 
-        middle_index = array.length / 2
+        middle_index = min_index + (max_index - min_index) / 2
         current_value = array[middle_index]
 
-        return middle_index if current_value == query
-
-        return search(array.take(middle_index), query) if query < current_value
-
-        if query > current_value
-          corrective_index = search(array.drop(middle_index + 1), query)
-          corrective_index == -1 ? -1 : (middle_index + 1) + corrective_index
+        if current_value > query
+          max_index = middle_index - 1
+          return search(array, query, min_index, max_index)
         end
+
+        if current_value < query
+          min_index = middle_index + 1
+          return search(array, query, min_index, max_index)
+        end
+
+        middle_index
       end
 
       private
